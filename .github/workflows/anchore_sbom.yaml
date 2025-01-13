@@ -1,0 +1,23 @@
+name: Create SBOM
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+jobs:
+  sbom:
+    name: sbom_generator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: anchore/sbom-action@v0
+        with:
+          file: pubspec.lock
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: ~/ninja-id-sbom.spdx.json
